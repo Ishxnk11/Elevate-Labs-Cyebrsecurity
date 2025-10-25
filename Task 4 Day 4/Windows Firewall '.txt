@@ -1,0 +1,107 @@
+Windows Firewall '
+1.Open firewall configuration tool 
+PS C:\Users\ishan> Get-NetFirewallProfile
+
+Name                            : Domain
+Enabled                         : True
+DefaultInboundAction            : NotConfigured
+DefaultOutboundAction           : NotConfigured
+AllowInboundRules               : NotConfigured
+AllowLocalFirewallRules         : NotConfigured
+AllowLocalIPsecRules            : NotConfigured
+AllowUserApps                   : NotConfigured
+AllowUserPorts                  : NotConfigured
+AllowUnicastResponseToMulticast : NotConfigured
+NotifyOnListen                  : True
+EnableStealthModeForIPsec       : NotConfigured
+LogFileName                     : %systemroot%\system32\LogFiles\Firewall\pfirewall.log
+LogMaxSizeKilobytes             : 4096
+LogAllowed                      : False
+LogBlocked                      : False
+LogIgnored                      : NotConfigured
+DisabledInterfaceAliases        : {NotConfigured}
+
+Name                            : Private
+Enabled                         : True
+DefaultInboundAction            : NotConfigured
+DefaultOutboundAction           : NotConfigured
+AllowInboundRules               : NotConfigured
+AllowLocalFirewallRules         : NotConfigured
+AllowLocalIPsecRules            : NotConfigured
+AllowUserApps                   : NotConfigured
+AllowUserPorts                  : NotConfigured
+AllowUnicastResponseToMulticast : NotConfigured
+NotifyOnListen                  : True
+EnableStealthModeForIPsec       : NotConfigured
+LogFileName                     : %systemroot%\system32\LogFiles\Firewall\pfirewall.log
+LogMaxSizeKilobytes             : 4096
+LogAllowed                      : False
+LogBlocked                      : False
+LogIgnored                      : NotConfigured
+DisabledInterfaceAliases        : {NotConfigured}
+
+Name                            : Public
+Enabled                         : True
+DefaultInboundAction            : NotConfigured
+DefaultOutboundAction           : NotConfigured
+AllowInboundRules               : NotConfigured
+AllowLocalFirewallRules         : NotConfigured
+AllowLocalIPsecRules            : NotConfigured
+AllowUserApps                   : NotConfigured
+AllowUserPorts                  : NotConfigured
+AllowUnicastResponseToMulticast : NotConfigured
+NotifyOnListen                  : True
+EnableStealthModeForIPsec       : NotConfigured
+LogFileName                     : %systemroot%\system32\LogFiles\Firewall\pfirewall.log
+LogMaxSizeKilobytes             : 4096
+LogAllowed                      : False
+LogBlocked                      : False
+LogIgnored                      : NotConfigured
+DisabledInterfaceAliases        : {NotConfigured}
+
+2.List current firewall rules.
+PS C:\Users\ishan> Get-NetFirewallRule
+
+3. Blocking a Port "11".
+PS C:\Users\ishan> New-NetFirewallRule -DisplayName "Block Inbound Port 11" -Direction Inbound -Protocol TCP -LocalPort 11 -Action Block -Profile Domain,Private,Public
+
+
+Name                          : {2d66ccdb-0bb1-4d7b-9a78-143764fa1828}
+DisplayName                   : Block Inbound Port 11
+Description                   :
+DisplayGroup                  :
+Group                         :
+Enabled                       : True
+Profile                       : Domain, Private, Public
+Platform                      : {}
+Direction                     : Inbound
+Action                        : Block
+EdgeTraversalPolicy           : Block
+LooseSourceMapping            : False
+LocalOnlyMapping              : False
+Owner                         :
+PrimaryStatus                 : OK
+Status                        : The rule was parsed successfully from the store. (65536)
+EnforcementStatus             : NotApplicable
+PolicyStoreSource             : PersistentStore
+PolicyStoreSourceType         : Local
+RemoteDynamicKeywordAddresses : {}
+PolicyAppId                   :
+
+4. Testing the newly blocked port 
+PS C:\Users\ishan> Test-NetConnection -ComputerName 192.168.0.112 -Port 11
+WARNING: TCP connect to (192.168.0.112 : 11) failed
+
+5. Not Applicable (on windows)
+6.Remove the test Block 
+PS C:\Users\ishan> Remove-NetFirewallRule -DisplayName "Block Inbound Port 11"
+
+7.Document commands or GUI steps used.
+Get-NetFirewallProfile
+Get-NetFirewallRule
+3.New-NetFirewallRule -DisplayName "Block Inbound Port 11" -Direction Inbound -Protocol TCP -LocalPort 11 -Action Block -Profile Domain,Private,Public
+4.Test-NetConnection -ComputerName 192.168.0.112 -Port 11
+5.Remove-NetFirewallRule -DisplayName "Block Inbound Port 11"
+
+8.Summarize how firewall filters traffic.
+A firewall filters network traffic by inspecting incoming and outgoing data packets and comparing them to predefined security rules, allowing or blocking traffic based on criteria like source and destination IP address, port, protocol, and application. It acts as a gatekeeper between trusted and untrusted networks, blocking all unsolicited inbound connections by default while permitting most outbound traffic unless specifically restricted by rules. By enforcing these rules, the firewall helps prevent unauthorized access and protects the computer from malicious activities or threats.
